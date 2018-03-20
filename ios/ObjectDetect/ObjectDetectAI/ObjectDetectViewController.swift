@@ -36,32 +36,11 @@ class Prediction {
 class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     @IBOutlet weak var previewView:UIView!
-    @IBOutlet weak var controlsContainerView:UIView!
-    @IBOutlet weak var progressContainerView:UIView!
     @IBOutlet weak var boundingBoxOverlay:BoundingBoxOverlay!
     @IBOutlet weak var actionButton:UIButton!
     @IBOutlet weak var infoButton:UIButton!
     
-    var predictions:[String:Prediction] = [String:Prediction]()
-    var predictionBusinessCard = Prediction("business card")
-    var predictionCreditCard = Prediction("credit card")
     
-    @IBOutlet weak var businessCardBar:UIProgressView! {
-        set {
-            predictionBusinessCard.progressView = newValue
-        }
-        get {
-            return predictionBusinessCard.progressView
-        }
-    }
-    @IBOutlet weak var creditCardBar:UIProgressView! {
-        set {
-            predictionCreditCard.progressView = newValue
-        }
-        get {
-            return predictionCreditCard.progressView
-        }
-    }
     
     var previewLayer:AVCaptureVideoPreviewLayer!
     var videoDataOutput:AVCaptureVideoDataOutput!
@@ -88,17 +67,9 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        controlsContainerView?.layer.cornerRadius = 8
-        controlsContainerView?.layer.masksToBounds = true
-        progressContainerView?.layer.cornerRadius = 8
-        progressContainerView?.layer.masksToBounds = true
+
         actionButton?.layer.cornerRadius = 4
         actionButton?.layer.masksToBounds = true
-
-        
-        predictions[predictionBusinessCard.label] = predictionBusinessCard
-        predictions[predictionCreditCard.label] = predictionCreditCard
         
         tensorFlow = TensorFlowProcessor()
         tensorFlow.prepare(withLabelsFile: TF_MODEL_LABEL_FILE, andGraphFile: TF_MODEL_GRAPH_FILE)
@@ -106,10 +77,10 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
         rootLayer = previewView.layer
         rootLayer.masksToBounds = true
 
-       // setupAVCapture()
+        setupAVCapture()
         
         if let results = tensorFlow.processImage("test_image.jpg") {
-            boundingBoxOverlay.assignBoxes(results)
+//            boundingBoxOverlay.assignBoxes(results)
         }
     }
     
@@ -140,10 +111,6 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
     func changeDetection(toState newState:Bool, animate:Bool = false) {
         let buttonLabel = newState ? "Stop Detecting" : "Start Detecting"
         
-        let uiStateBlock = {
-            self.progressContainerView.alpha = newState ? 1 : 0.3
-        }
-        
         let completionBlock = {
             self.actionButton.setTitle(buttonLabel, for: .normal)
             self.actionButton.isEnabled = true
@@ -152,7 +119,6 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
         
         if animate {
             UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.transitionCrossDissolve, animations: {
-                uiStateBlock()
             }) { (completed) in
                 if completed {
                     completionBlock()
@@ -161,7 +127,6 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
         }
         else {
             DispatchQueue.main.sync {
-                uiStateBlock()
                 completionBlock()
             }
         }
@@ -304,7 +269,7 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
 
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             if let results = tensorFlow.processFrame(pixelBuffer) {
-                boundingBoxOverlay.assignBoxes(results)
+//                boundingBoxOverlay.assignBoxes(results)
             }
         }
     }
