@@ -38,6 +38,7 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
     @IBOutlet weak var previewView:UIView!
     @IBOutlet weak var controlsContainerView:UIView!
     @IBOutlet weak var progressContainerView:UIView!
+    @IBOutlet weak var boundingBoxOverlay:BoundingBoxOverlay!
     @IBOutlet weak var actionButton:UIButton!
     @IBOutlet weak var infoButton:UIButton!
     
@@ -102,9 +103,14 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
         tensorFlow = TensorFlowProcessor()
         tensorFlow.prepare(withLabelsFile: TF_MODEL_LABEL_FILE, andGraphFile: TF_MODEL_GRAPH_FILE)
         
-        tensorFlow.processImage("test_image.jpg")
+        rootLayer = previewView.layer
+        rootLayer.masksToBounds = true
 
        // setupAVCapture()
+        
+        if let results = tensorFlow.processImage("test_image.jpg") {
+            boundingBoxOverlay.assignBoxes(results)
+        }
     }
     
     @IBAction func infoButtonPressed(_ sender: AnyObject) {
@@ -249,8 +255,6 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
         previewLayer.backgroundColor = UIColor.black.cgColor
         previewLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
-        rootLayer = previewView.layer
-        rootLayer.masksToBounds = true
         previewLayer.frame = rootLayer.bounds
         rootLayer.insertSublayer(previewLayer, at: 0)
         
@@ -299,8 +303,8 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
         }
 
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
-            if tensorFlow.processFrame(pixelBuffer) != nil {
-                // TODO: Fill in
+            if let results = tensorFlow.processFrame(pixelBuffer) {
+                boundingBoxOverlay.assignBoxes(results)
             }
         }
     }

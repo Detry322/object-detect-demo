@@ -71,6 +71,10 @@ void PopulateArrayOfPredictions(std::vector<tensorflow::Tensor>& outputs, int im
     
     for (int i = 0; i < num_detections; i++) {
         const float score = scores_flat(i);
+        
+        // Arbitrary cutoff
+        if (score < 0.7) break;
+        
         const int top = (int) (boxes_flat(4*i) * image_height);
         const int left = (int) (boxes_flat(4*i + 1) * image_width);
         const int bottom = (int) (boxes_flat(4*i + 2) * image_height);

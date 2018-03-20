@@ -27,34 +27,6 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RrN-Ws-Grl">
                                         <rect key="frame" x="8" y="474" width="359" height="165"/>
                                         <subviews>
-                                            <view alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2G7-Wd-3lY">
-                                                <rect key="frame" x="10" y="10" width="339" height="102"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Credit Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KuS-Kw-7r6">
-                                                        <rect key="frame" x="8" y="41" width="88" height="21"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="icT-Zp-Qb7">
-                                                        <rect key="frame" x="130" y="17" width="209" height="3"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </progressView>
-                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2Kq-qM-2QF">
-                                                        <rect key="frame" x="130" y="50" width="209" height="3"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </progressView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Business Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lnJ-hj-k2X">
-                                                        <rect key="frame" x="8" y="8" width="110" height="21"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </view>
                                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GE7-e8-nFL">
                                                 <rect key="frame" x="329" y="135" width="22" height="22"/>
                                                 <connections>
@@ -72,16 +44,74 @@
                                                     <action selector="actionButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DkU-JK-clf"/>
                                                 </connections>
                                             </button>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f2B-bd-AjC">
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="165"/>
+                                                <subviews>
+                                                    <view alpha="0.30000001192092896" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yfx-QE-Vxc">
+                                                        <rect key="frame" x="10" y="10" width="339" height="102"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Credit Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ck0-GC-mql">
+                                                                <rect key="frame" x="8" y="41" width="88" height="21"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7fw-QP-Wab">
+                                                                <rect key="frame" x="130" y="17" width="209" height="3"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            </progressView>
+                                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="i0d-cI-IJz">
+                                                                <rect key="frame" x="130" y="50" width="209" height="3"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            </progressView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Business Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r6U-4E-SFA">
+                                                                <rect key="frame" x="8" y="8" width="110" height="21"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </view>
+                                                    <button contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BBZ-EB-3fT">
+                                                        <rect key="frame" x="329" y="135" width="22" height="22"/>
+                                                        <connections>
+                                                            <action selector="infoButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="83q-WG-MVe"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VuX-tY-EF5">
+                                                        <rect key="frame" x="115" y="127" width="128" height="30"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="128" id="HCZ-sp-iUl"/>
+                                                        </constraints>
+                                                        <state key="normal" title="Start Detecting"/>
+                                                        <connections>
+                                                            <action selector="actionButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8jV-O4-eD5"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.58090753419999996" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstItem="yfx-QE-Vxc" firstAttribute="leading" secondItem="f2B-bd-AjC" secondAttribute="leading" constant="10" id="0od-7w-s0j"/>
+                                                    <constraint firstAttribute="height" constant="165" id="4WL-na-Hkx"/>
+                                                    <constraint firstAttribute="trailing" secondItem="yfx-QE-Vxc" secondAttribute="trailing" constant="10" id="Bgy-Nb-XFl"/>
+                                                    <constraint firstAttribute="bottom" secondItem="VuX-tY-EF5" secondAttribute="bottom" constant="8" id="Dpm-3S-RAH"/>
+                                                    <constraint firstAttribute="bottom" secondItem="yfx-QE-Vxc" secondAttribute="bottom" constant="53" id="OcF-Qt-UGz"/>
+                                                    <constraint firstItem="yfx-QE-Vxc" firstAttribute="top" secondItem="f2B-bd-AjC" secondAttribute="top" constant="10" id="XT8-ay-3q5"/>
+                                                    <constraint firstAttribute="bottom" secondItem="BBZ-EB-3fT" secondAttribute="bottom" constant="8" id="Xd9-9z-wYM"/>
+                                                    <constraint firstAttribute="trailing" secondItem="BBZ-EB-3fT" secondAttribute="trailing" constant="8" id="bQg-ZL-F1D"/>
+                                                    <constraint firstItem="VuX-tY-EF5" firstAttribute="centerX" secondItem="f2B-bd-AjC" secondAttribute="centerX" id="qTz-3B-unp"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.58090753424657537" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstItem="2G7-Wd-3lY" firstAttribute="top" secondItem="RrN-Ws-Grl" secondAttribute="top" constant="10" id="3za-hq-st7"/>
-                                            <constraint firstAttribute="bottom" secondItem="2G7-Wd-3lY" secondAttribute="bottom" constant="53" id="C2y-tQ-TSJ"/>
                                             <constraint firstAttribute="trailing" secondItem="GE7-e8-nFL" secondAttribute="trailing" constant="8" id="M4i-2A-0IY"/>
                                             <constraint firstAttribute="bottom" secondItem="GE7-e8-nFL" secondAttribute="bottom" constant="8" id="TqF-Yg-LPo"/>
-                                            <constraint firstItem="2G7-Wd-3lY" firstAttribute="leading" secondItem="RrN-Ws-Grl" secondAttribute="leading" constant="10" id="aBY-PB-QoA"/>
                                             <constraint firstAttribute="height" constant="165" id="ecd-fV-mCD"/>
-                                            <constraint firstAttribute="trailing" secondItem="2G7-Wd-3lY" secondAttribute="trailing" constant="10" id="hmm-J1-zcW"/>
                                             <constraint firstItem="zCW-Zb-Eja" firstAttribute="centerX" secondItem="RrN-Ws-Grl" secondAttribute="centerX" id="s9E-Ir-7Ss"/>
                                             <constraint firstAttribute="bottom" secondItem="zCW-Zb-Eja" secondAttribute="bottom" constant="8" id="x7y-5F-Ah9"/>
                                         </constraints>
@@ -93,6 +123,11 @@
                                     <constraint firstItem="RrN-Ws-Grl" firstAttribute="leading" secondItem="EQ7-Z1-6im" secondAttribute="leading" constant="8" id="H14-xf-M20"/>
                                     <constraint firstAttribute="trailing" secondItem="RrN-Ws-Grl" secondAttribute="trailing" constant="8" id="WA5-Ag-eaA"/>
                                 </constraints>
+                            </view>
+                            <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUJ-Y2-nWN" customClass="BoundingBoxOverlay" customModule="ObjectDetectAI" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -107,12 +142,10 @@
                     </view>
                     <connections>
                         <outlet property="actionButton" destination="zCW-Zb-Eja" id="6zX-wW-wwo"/>
-                        <outlet property="businessCardBar" destination="icT-Zp-Qb7" id="aJ2-cr-PC9"/>
+                        <outlet property="boundingBoxOverlay" destination="pUJ-Y2-nWN" id="xNO-JX-eyS"/>
                         <outlet property="controlsContainerView" destination="RrN-Ws-Grl" id="MpC-oF-cRa"/>
-                        <outlet property="creditCardBar" destination="2Kq-qM-2QF" id="EQg-jq-h1Y"/>
                         <outlet property="infoButton" destination="GE7-e8-nFL" id="nWp-NJ-oOg"/>
                         <outlet property="previewView" destination="EQ7-Z1-6im" id="B6F-qz-uyT"/>
-                        <outlet property="progressContainerView" destination="2G7-Wd-3lY" id="ph4-Jk-8rQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

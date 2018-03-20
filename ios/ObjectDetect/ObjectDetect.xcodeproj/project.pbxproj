@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E128FA8F2061734000BE827D /* BoundingBoxOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E128FA8E2061734000BE827D /* BoundingBoxOverlay.swift */; };
 		E166F3C72060CB4D0064C516 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E166F3C22060CB4D0064C516 /* Info.plist */; };
 		E166F3C92060CB4D0064C516 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166F3C42060CB4D0064C516 /* AppDelegate.swift */; };
 		E166F3D02060CB7E0064C516 /* TensorFlowProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E166F3CC2060CB7E0064C516 /* TensorFlowProcessor.mm */; };
@@ -53,6 +54,7 @@
 		591D3EDE1CFFAD230059011C /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = lib/libprotobuf.a; sourceTree = "<group>"; };
 		592FF8B818ECBD7600C164F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		592FF8BA18ECBD7600C164F8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E128FA8E2061734000BE827D /* BoundingBoxOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBoxOverlay.swift; sourceTree = SOURCE_ROOT; };
 		E166F3C22060CB4D0064C516 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ObjectDetectAI/Info.plist; sourceTree = SOURCE_ROOT; };
 		E166F3C42060CB4D0064C516 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ObjectDetectAI/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
 		E166F3C52060CB4D0064C516 /* ObjectDetect-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ObjectDetect-Bridging-Header.h"; path = "ObjectDetectAI/ObjectDetect-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
@@ -153,6 +155,7 @@
 				E166F3D22060CB870064C516 /* data */,
 				E166F3C42060CB4D0064C516 /* AppDelegate.swift */,
 				E1FB87DF2060EDDD00AC19F8 /* ObjectDetectViewController.swift */,
+				E128FA8E2061734000BE827D /* BoundingBoxOverlay.swift */,
 				E166F3DD2060CC5B0064C516 /* Main.storyboard */,
 				E166F3DF2060CC5B0064C516 /* LaunchScreen.storyboard */,
 				E166F3C22060CB4D0064C516 /* Info.plist */,
@@ -267,6 +270,7 @@
 			files = (
 				E1FB87E02060EDDD00AC19F8 /* ObjectDetectViewController.swift in Sources */,
 				E166F3C92060CB4D0064C516 /* AppDelegate.swift in Sources */,
+				E128FA8F2061734000BE827D /* BoundingBoxOverlay.swift in Sources */,
 				E166F3D02060CB7E0064C516 /* TensorFlowProcessor.mm in Sources */,
 				E166F3D12060CB7E0064C516 /* tensorflow_utils.mm in Sources */,
 				E1FB87E32060F37D00AC19F8 /* ios_image_load.mm in Sources */,
