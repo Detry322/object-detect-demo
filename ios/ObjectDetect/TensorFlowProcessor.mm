@@ -55,6 +55,48 @@ std::vector<std::string> labels;
 NSMutableDictionary *oldPredictionValues;
 BOOL isConfigured = NO;
 
+void PopulateArrayOfPredictions(std::vector<tensorflow::Tensor>& outputs, int image_width, int image_height, NSMutableArray** outputArray) {
+    auto result = [NSMutableArray new];
+//    "detection_boxes", "detection_scores", "detection_classes", "num_detections"
+    tensorflow::Tensor& boxes = outputs[0];
+    tensorflow::Tensor& scores = outputs[1];
+    tensorflow::Tensor& classes = outputs[2];
+    
+    tensorflow::TTypes<float>::Flat boxes_flat = boxes.flat<float>();
+    tensorflow::TTypes<float>::Flat scores_flat = scores.flat<float>();
+    tensorflow::TTypes<float>::Flat classes_flat = classes.flat<float>();
+    
+    int num_detections = (int) outputs[3].flat<float>()(0);
+    
+    NSLog(@"%@: %d", @"Detections", num_detections);
+    
+    for (int i = 0; i < num_detections; i++) {
+        const float score = scores_flat(i);
+        const int top = (int) (boxes_flat(4*i) * image_height);
+        const int left = (int) (boxes_flat(4*i + 1) * image_width);
+        const int bottom = (int) (boxes_flat(4*i + 2) * image_height);
+        const int right = (int) (boxes_flat(4*i + 3) * image_width);
+        const int class_idx = (int) classes_flat(i);
+        NSString* class_name = [NSString stringWithUTF8String:labels[class_idx].c_str()];
+        
+        NSDictionary* detection = @{
+                                      @"score" : @(score),
+                                      @"class_name" : class_name,
+                                      @"top" : @(top),
+                                      @"left" : @(left),
+                                      @"bottom" : @(bottom),
+                                      @"right" : @(right),
+                                      @"class_index" : @(class_idx),
+        };
+        
+        NSLog(@"Detection %d: %@ %.02f, TL: (%d, %d), BR: (%d, %d)", i, class_name, score, top, left, bottom, right);
+
+        [result addObject:detection];
+    }
+    
+    *outputArray = result;
+}
+
 - (void)prepareWithLabelsFile:(NSString*)labelsFilename andGraphFile:(NSString*)graphFilename {
     tensorflow::Status load_status;
     
@@ -151,7 +193,7 @@ BOOL isConfigured = NO;
             in + (in_y * image_width * image_channels) + (in_x * image_channels);
             tensorflow::uint8 *out_pixel = out_row + (x * wanted_input_channels);
             for (int c = 0; c < wanted_input_channels; ++c) {
-                out_pixel[c] = (in_pixel[c] - input_mean) / input_std;
+                out_pixel[c] = in_pixel[c];
             }
         }
     }
@@ -174,8 +216,9 @@ BOOL isConfigured = NO;
     double b = CFAbsoluteTimeGetCurrent();
     unsigned int m = ((b-a) * 1000.0f); // convert from seconds to milliseconds
     NSLog(@"%@: %d ms", @"Run Model Time taken", m);
+    
+    PopulateArrayOfPredictions(outputs, wanted_input_width, wanted_input_height, &result);
     return result;
-
 }
 
 
