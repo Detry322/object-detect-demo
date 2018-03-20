@@ -135,7 +135,7 @@ void PopulateArrayOfPredictions(std::vector<tensorflow::Tensor>& outputs, int im
     int width, height, channels;
     std::vector<unsigned char> result = LoadImageFromFile([labels_path UTF8String], &width, &height, &channels);
     int bytesPerRow = width*channels;
-    return [self processBuffer:result.data() withBytesPerRow:bytesPerRow andWidth:width andHeight:height andNumChannels:channels];
+    return [self processBuffer:result.data() withBytesPerRow:bytesPerRow andWidth:width andHeight:height andNumChannels:channels andReverse:false];
 }
 
 - (NSArray* _Nullable)processFrame:(CVPixelBufferRef _Nonnull)frame {
@@ -144,12 +144,12 @@ void PopulateArrayOfPredictions(std::vector<tensorflow::Tensor>& outputs, int im
     const int fullHeight = (int)CVPixelBufferGetHeight(frame);
     CVPixelBufferLockBaseAddress(frame, kCVPixelBufferLock_ReadOnly);
     unsigned char *sourceBaseAddr = (unsigned char *)(CVPixelBufferGetBaseAddress(frame));
-    auto result = [self processBuffer:sourceBaseAddr withBytesPerRow:sourceRowBytes andWidth:image_width andHeight:fullHeight andNumChannels:4];
+    auto result = [self processBuffer:sourceBaseAddr withBytesPerRow:sourceRowBytes andWidth:image_width andHeight:fullHeight andNumChannels:4 andReverse:true];
     CVPixelBufferUnlockBaseAddress(frame, kCVPixelBufferLock_ReadOnly);
     return result;
 }
 
-- (NSArray* _Nullable)processBuffer:(unsigned char* _Nonnull)pixelBuffer withBytesPerRow:(int)bytesPerRow andWidth:(int)width andHeight:(int)height andNumChannels:(int)numChannels {
+- (NSArray* _Nullable)processBuffer:(unsigned char* _Nonnull)pixelBuffer withBytesPerRow:(int)bytesPerRow andWidth:(int)width andHeight:(int)height andNumChannels:(int)numChannels andReverse:(bool)reverse {
     
     if (!isConfigured) {
         return nil;
@@ -170,10 +170,18 @@ void PopulateArrayOfPredictions(std::vector<tensorflow::Tensor>& outputs, int im
         tensorflow::uint8 *in = pixelBuffer;
         int length = width*height*numChannels;
         int j = 0;
-        for (int i = 0; i < length; i++) {
-            if (i % 4 == 3) continue;
-            out[j] = in[i];
-            j++;
+        if (reverse) {
+            for (int i = 0; i < length; i++) {
+                if (i % numChannels >= wanted_input_channels) continue;
+                out[j + 2*(1 - (j % 3))] = in[i];
+                j++;
+            }
+        } else {
+            for (int i = 0; i < length; i++) {
+                if (i % numChannels >= wanted_input_channels) continue;
+                out[j] = in[i];
+                j++;
+            }
         }
     } else {
         const int sourceRowBytes = bytesPerRow; //(int)CVPixelBufferGetBytesPerRow(pixelBuffer);
@@ -206,7 +214,11 @@ void PopulateArrayOfPredictions(std::vector<tensorflow::Tensor>& outputs, int im
                 in + (in_y * image_width * image_channels) + (in_x * image_channels);
                 tensorflow::uint8 *out_pixel = out_row + (x * wanted_input_channels);
                 for (int c = 0; c < wanted_input_channels; ++c) {
-                    out_pixel[c] = in_pixel[c];
+                    if (reverse) {
+                        out_pixel[2-c] = in_pixel[c];
+                    } else {
+                        out_pixel[c] = in_pixel[c];
+                    }
                 }
             }
         }
