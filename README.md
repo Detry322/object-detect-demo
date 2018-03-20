@@ -1,5 +1,5 @@
-# faster-rcnn-demo
-A demo of faster-rcnn running in tensorflow on iOS and Android
+# object-detect-demo
+A demo of object detection using faster-rcnn running in tensorflow on iOS and Android.
 
 ## Setup
 
