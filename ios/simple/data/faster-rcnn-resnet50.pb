@@ -1,1 +1,0 @@
-../../../assets/faster_rcnn_resnet50_lowproposals_coco_2018_01_28/frozen_inference_graph.pb
