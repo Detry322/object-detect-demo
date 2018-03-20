@@ -15,6 +15,6 @@ Then, you need to compile tensorflow from source:
 
 ```
 cd tensorflow
-tensorflow/contrib/makefile/build_all_ios.sh
-cd ..
 ```
+
+Follow instructions here: [building tensorflow for iOS](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/makefile#ios)
