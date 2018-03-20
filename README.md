@@ -6,24 +6,15 @@ A demo of faster-rcnn running in tensorflow on iOS and Android
 First, download the needed model.
 
 ```
+git submodule init
+git submodule update
 scripts/download_model.sh
 ```
 
-### iOS
-
-Requirements: xcode, cocoapods
+Then, you need to compile tensorflow from source:
 
 ```
-cd ios/simple
-pod install
-cd ../camera
-pod install
-```
-
-### Android
-
-Requirements: ???
-
-```
-??? tbd
+cd tensorflow
+tensorflow/contrib/makefile/build_all_ios.sh
+cd ..
 ```
