@@ -141,7 +141,7 @@ NSString* RunInferenceOnImage() {
   tensorflow::GraphDef tensorflow_graph;
   LOG(INFO) << "Graph created.";
 
-  NSString* network_path = FilePathForResourceName(@"tensorflow_inception_graph", @"pb");
+  NSString* network_path = FilePathForResourceName(@"faster-rcnn-inception", @"pb");
   PortableReadFileToProto([network_path UTF8String], &tensorflow_graph);
 
   LOG(INFO) << "Creating session.";
@@ -152,7 +152,7 @@ NSString* RunInferenceOnImage() {
   }
 
   // Read the label list
-  NSString* labels_path = FilePathForResourceName(@"imagenet_comp_graph_label_strings", @"txt");
+  NSString* labels_path = FilePathForResourceName(@"labels", @"txt");
   std::vector<std::string> label_strings;
   std::ifstream t;
   t.open([labels_path UTF8String]);
@@ -163,8 +163,8 @@ NSString* RunInferenceOnImage() {
   }
   t.close();
 
-  // Read the Grace Hopper image.
-  NSString* image_path = FilePathForResourceName(@"grace_hopper", @"jpg");
+  // Read the test image.
+  NSString* image_path = FilePathForResourceName(@"test_image", @"jpg");
   int image_width;
   int image_height;
   int image_channels;
