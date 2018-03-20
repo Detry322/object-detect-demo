@@ -9,12 +9,11 @@ First, download the needed model.
 git submodule init
 git submodule update
 scripts/download_model.sh
+scripts/fix_tensorflow.sh
 ```
 
 Then, you need to compile tensorflow from source:
 
 ```
-cd tensorflow
+tensorflow/tensorflow/contrib/makefile/build_all_ios.sh 
 ```
-
-Follow instructions here: [building tensorflow for iOS](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/makefile#ios)
