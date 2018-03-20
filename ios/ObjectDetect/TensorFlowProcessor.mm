@@ -34,11 +34,10 @@
 #include "tensorflow/core/public/session.h"
 #include "tensorflow/core/util/memmapped_file_system.h"
 
-const int wanted_input_width = 299;
-const int wanted_input_height = 299;
+const bool variable_size_input = true;
+const int wanted_input_width = 400;
+const int wanted_input_height = 400;
 const int wanted_input_channels = 3;
-const int input_mean = 128;
-const int input_std = 128;
 const bool model_uses_memory_mapping = false;
 
 @interface TensorFlowProcessor (Private) {
@@ -154,52 +153,63 @@ void PopulateArrayOfPredictions(std::vector<tensorflow::Tensor>& outputs, int im
     
     assert(pixelBuffer != NULL);
     
-    NSMutableArray *result = nil;
-    
-    const int sourceRowBytes = bytesPerRow; //(int)CVPixelBufferGetBytesPerRow(pixelBuffer);
-    const int image_width = width; //(int)CVPixelBufferGetWidth(pixelBuffer);
-    const int fullHeight = height; //(int)CVPixelBufferGetHeight(pixelBuffer);
-    //CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-    unsigned char *sourceBaseAddr = pixelBuffer; //(unsigned char *)(CVPixelBufferGetBaseAddress(pixelBuffer));
-    int image_height;
-    unsigned char *sourceStartAddr;
-    if (fullHeight <= image_width) {
-        image_height = fullHeight;
-        sourceStartAddr = sourceBaseAddr;
-    } else {
-        image_height = image_width;
-        const int marginY = ((fullHeight - image_width) / 2);
-        sourceStartAddr = (sourceBaseAddr + (marginY * sourceRowBytes));
-    }
     const int image_channels = numChannels;
-    
-    
-//    NSLog(@"Img w = %d h= %d", image_width, fullHeight);
-    
     assert(image_channels >= wanted_input_channels);
-    tensorflow::Tensor image_tensor(
-                                    tensorflow::DT_UINT8,
-                                    tensorflow::TensorShape(
-                                                            {1, wanted_input_height, wanted_input_width, wanted_input_channels}));
-    auto image_tensor_mapped = image_tensor.tensor<tensorflow::uint8, 4>();
-    tensorflow::uint8 *in = sourceStartAddr;
-    tensorflow::uint8 *out = image_tensor_mapped.data();
-    for (int y = 0; y < wanted_input_height; ++y) {
-        tensorflow::uint8 *out_row = out + (y * wanted_input_width * wanted_input_channels);
-        for (int x = 0; x < wanted_input_width; ++x) {
-            const int in_x = (y * image_width) / wanted_input_width;
-            const int in_y = (x * image_height) / wanted_input_height;
-            tensorflow::uint8 *in_pixel =
-            in + (in_y * image_width * image_channels) + (in_x * image_channels);
-            tensorflow::uint8 *out_pixel = out_row + (x * wanted_input_channels);
-            for (int c = 0; c < wanted_input_channels; ++c) {
-                out_pixel[c] = in_pixel[c];
+    
+    tensorflow::Tensor image_tensor;
+    if (variable_size_input) {
+        image_tensor = tensorflow::Tensor(tensorflow::DT_UINT8,
+                                          tensorflow::TensorShape(
+                                                                  {1, height, width, wanted_input_channels}));
+        auto image_tensor_mapped = image_tensor.tensor<tensorflow::uint8, 4>();
+        tensorflow::uint8 *out = image_tensor_mapped.data();
+        tensorflow::uint8 *in = pixelBuffer;
+        int length = width*height*numChannels;
+        int j = 0;
+        for (int i = 0; i < length; i++) {
+            if (i % 4 == 3) continue;
+            out[j] = in[i];
+            j++;
+        }
+    } else {
+        const int sourceRowBytes = bytesPerRow; //(int)CVPixelBufferGetBytesPerRow(pixelBuffer);
+        const int image_width = width; //(int)CVPixelBufferGetWidth(pixelBuffer);
+        const int fullHeight = height; //(int)CVPixelBufferGetHeight(pixelBuffer);
+        //CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+        unsigned char *sourceBaseAddr = pixelBuffer; //(unsigned char *)(CVPixelBufferGetBaseAddress(pixelBuffer));
+        int image_height;
+        unsigned char *sourceStartAddr;
+        if (fullHeight <= image_width) {
+            image_height = fullHeight;
+            sourceStartAddr = sourceBaseAddr;
+        } else {
+            image_height = image_width;
+            const int marginY = ((fullHeight - image_width) / 2);
+            sourceStartAddr = (sourceBaseAddr + (marginY * sourceRowBytes));
+        }
+        image_tensor = tensorflow::Tensor(tensorflow::DT_UINT8,
+                                          tensorflow::TensorShape(
+                                                                  {1, wanted_input_height, wanted_input_width, wanted_input_channels}));
+        auto image_tensor_mapped = image_tensor.tensor<tensorflow::uint8, 4>();
+        tensorflow::uint8 *in = sourceStartAddr;
+        tensorflow::uint8 *out = image_tensor_mapped.data();
+        for (int y = 0; y < wanted_input_height; ++y) {
+            tensorflow::uint8 *out_row = out + (y * wanted_input_width * wanted_input_channels);
+            for (int x = 0; x < wanted_input_width; ++x) {
+                const int in_x = (y * image_width) / wanted_input_width;
+                const int in_y = (x * image_height) / wanted_input_height;
+                tensorflow::uint8 *in_pixel =
+                in + (in_y * image_width * image_channels) + (in_x * image_channels);
+                tensorflow::uint8 *out_pixel = out_row + (x * wanted_input_channels);
+                for (int c = 0; c < wanted_input_channels; ++c) {
+                    out_pixel[c] = in_pixel[c];
+                }
             }
         }
     }
     
     if (!tf_session.get()) {
-        return result;
+        return nil;
     }
     double a = CFAbsoluteTimeGetCurrent();
     std::vector<tensorflow::Tensor> outputs;
@@ -210,14 +220,15 @@ void PopulateArrayOfPredictions(std::vector<tensorflow::Tensor>& outputs, int im
                                                     &outputs);
     if (!run_status.ok()) {
         LOG(FATAL) << "Running model failed:" << run_status;
-        return result;
+        return nil;
     }
     
     double b = CFAbsoluteTimeGetCurrent();
     unsigned int m = ((b-a) * 1000.0f); // convert from seconds to milliseconds
     NSLog(@"%@: %d ms", @"Run Model Time taken", m);
     
-    PopulateArrayOfPredictions(outputs, wanted_input_width, wanted_input_height, &result);
+    NSMutableArray *result = nil;
+    PopulateArrayOfPredictions(outputs, width, height, &result);
     return result;
 }
 
