@@ -33,14 +33,14 @@ class BoundingBoxOverlay: UIView {
         // Drawing code
         let context = UIGraphicsGetCurrentContext()
         for box in (self.boxes as! [NSDictionary]) {
-            let top: Int = box.object(forKey: "top") as! Int
-            let left: Int = box.object(forKey: "left") as! Int
-            let bottom: Int = box.object(forKey: "bottom") as! Int
-            let right: Int = box.object(forKey: "right") as! Int
+            let top: Int = (box.object(forKey: "top") as! Int)/2
+            let left: Int = (box.object(forKey: "left") as! Int)/2
+            let bottom: Int = (box.object(forKey: "bottom") as! Int)/2
+            let right: Int = (box.object(forKey: "right") as! Int)/2
             let class_name: String = box.object(forKey: "class_name") as! String
             
             
-            let textFont = UIFont(name: "Helvetica", size: 48)!
+            let textFont = UIFont(name: "Helvetica", size: 36)!
             let textFontAttributes = [
                 NSFontAttributeName: textFont,
                 NSForegroundColorAttributeName: UIColor.blue,
@@ -58,7 +58,6 @@ class BoundingBoxOverlay: UIView {
     
     func assignBoxes(_ newBoxes:[Any]) {
         self.boxes = newBoxes;
-        self.setNeedsDisplay();
     }
 
 }

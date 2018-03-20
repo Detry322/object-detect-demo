@@ -36,11 +36,10 @@ class Prediction {
 class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     @IBOutlet weak var previewView:UIView!
-    @IBOutlet weak var boundingBoxOverlay:BoundingBoxOverlay!
     @IBOutlet weak var actionButton:UIButton!
     @IBOutlet weak var infoButton:UIButton!
     
-    
+    var boundingBoxOverlay:BoundingBoxOverlay!
     
     var previewLayer:AVCaptureVideoPreviewLayer!
     var videoDataOutput:AVCaptureVideoDataOutput!
@@ -80,7 +79,10 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
         setupAVCapture()
         
         if let results = tensorFlow.processImage("test_image.jpg") {
-//            boundingBoxOverlay.assignBoxes(results)
+            boundingBoxOverlay?.assignBoxes(results)
+            DispatchQueue.main.async {
+                self.boundingBoxOverlay.setNeedsDisplay()
+            }
         }
     }
     
@@ -223,6 +225,11 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
         previewLayer.frame = rootLayer.bounds
         rootLayer.insertSublayer(previewLayer, at: 0)
         
+        boundingBoxOverlay = BoundingBoxOverlay()
+        boundingBoxOverlay.layer.frame = previewLayer.bounds
+        self.previewView.addSubview(boundingBoxOverlay)
+        self.previewLayer.addSublayer(boundingBoxOverlay.layer)
+        
         session.startRunning()
         
     }
@@ -269,7 +276,10 @@ class ObjectDetectViewController: UIViewController, AVCaptureVideoDataOutputSamp
 
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             if let results = tensorFlow.processFrame(pixelBuffer) {
-//                boundingBoxOverlay.assignBoxes(results)
+                boundingBoxOverlay?.assignBoxes(results)
+                DispatchQueue.main.async {
+                    self.boundingBoxOverlay.setNeedsDisplay()
+                }
             }
         }
     }
