@@ -33,21 +33,28 @@ class BoundingBoxOverlay: UIView {
         // Drawing code
         let context = UIGraphicsGetCurrentContext()
         for box in (self.boxes as! [NSDictionary]) {
-            let top: Int = (box.object(forKey: "top") as! Int)/2
-            let left: Int = (box.object(forKey: "left") as! Int)/2
-            let bottom: Int = (box.object(forKey: "bottom") as! Int)/2
-            let right: Int = (box.object(forKey: "right") as! Int)/2
+            let top: Int = (box.object(forKey: "top") as! Int)*3/4 + 170 // Translate so overlay is better - optimized for iphone X
+            let left: Int = (box.object(forKey: "left") as! Int)*3/4 - 30
+            let bottom: Int = (box.object(forKey: "bottom") as! Int)*3/4 + 170
+            let right: Int = (box.object(forKey: "right") as! Int)*3/4 - 30
             let class_name: String = box.object(forKey: "class_name") as! String
+            let score: Float32 = box.object(forKey: "score") as! Float32
             
+            var color: UIColor = UIColor.blue
+            if score > 0.95 {
+                color = UIColor.green
+            } else if score > 0.85 {
+                color = UIColor.cyan
+            }
             
             let textFont = UIFont(name: "Helvetica", size: 36)!
             let textFontAttributes = [
                 NSFontAttributeName: textFont,
-                NSForegroundColorAttributeName: UIColor.blue,
+                NSForegroundColorAttributeName: color,
             ] as [String : Any]
             
-            context?.setLineWidth(4.0)
-            context?.setStrokeColor(UIColor.blue.cgColor)
+            context?.setLineWidth(3.0)
+            context?.setStrokeColor(color.cgColor)
             let rectangle = CGRect(x: left, y: top, width: (right-left), height: (bottom-top))
             context?.addRect(rectangle)
             context?.strokePath()
